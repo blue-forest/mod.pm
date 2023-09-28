@@ -25,13 +25,11 @@ const DOMAIN = "mod.pm"
 function handler(req: Request): Response | undefined {
   if(req.headers.get("host") === `install.${DOMAIN}`) {
     return new Response(
-      Deno.readTextFileSync("../.scripts/install.sh"),
+      Deno.readTextFileSync("./install.sh"),
       { headers: { "content-type": "text/plain" } },
     )
   }
-  if(req.url === "/") {
-    return Response.redirect(`${REPO_URL}blob/${REPO_BRANCH}/README.md`, 301)
-  }
+  return Response.redirect(`${REPO_URL}blob/${REPO_BRANCH}/README.md`, 301)
 }
 
 serve(handler)

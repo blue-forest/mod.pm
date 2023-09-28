@@ -18,8 +18,20 @@
 
 import { serve } from "https://deno.land/std@0.140.0/http/server.ts"
 
-function handler(_req: Request): Response {
-  return new Response("Hello, World")
+const REPO_URL = "https://github.com/blue-forest/mod.pm/"
+const REPO_BRANCH = "master"
+const DOMAIN = "mod.pm"
+
+function handler(req: Request): Response | undefined {
+  if(req.headers.get("host") === `install.${DOMAIN}`) {
+    return new Response(
+      Deno.readTextFileSync("../.scripts/install.sh"),
+      { headers: { "content-type": "text/plain" } },
+    )
+  }
+  if(req.url === "/") {
+    return Response.redirect(`${REPO_URL}blob/${REPO_BRANCH}/README.md`, 301)
+  }
 }
 
 serve(handler)

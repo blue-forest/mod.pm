@@ -16,6 +16,19 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
+use structopt::StructOpt;
+
+#[derive(StructOpt, Debug)]
+#[structopt(name = "mod.pm", about = "A universal package manager")]
+struct Opt {
+  #[structopt(short, long)]
+  name: Option<String>,
+}
+
 fn main() {
-  println!("Hello, world!");
+  let opt = Opt::from_args();
+  match opt.name {
+    Some(name) => println!("Hello, {}!", name),
+    None => println!("Hello, World!"),
+  }
 }
